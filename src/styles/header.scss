@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  justify-content: center;
+  background-color: $white;
+
+  &__logo {
+    display: flex;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1170px;
+    height: 60px;
+  }
+}

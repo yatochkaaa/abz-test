@@ -1,0 +1,8 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+
+  &__item:not(:last-child) {
+    margin-right: 10px;
+  }
+}
