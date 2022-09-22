@@ -1,0 +1,28 @@
+.card {
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: $white;
+  height: 254px;
+  width: 370px;
+
+  &__photo {
+    margin-bottom: 20px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+
+  &__name {
+    margin-bottom: 20px;
+    @extend %dotsOverflow;
+  }
+
+  &__position {
+    @extend %dotsOverflow;
+  }
+
+  &__email {
+    @extend %dotsOverflow;
+  }
+}

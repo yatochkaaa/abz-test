@@ -1,6 +1,8 @@
 @import "./utils/_vars.scss";
 @import "./utils/_fonts.scss";
 @import "./utils/_typography.scss";
+@import "./utils/_extends.scss";
+@import "./utils/_mixins.scss";
 @import "./utils/_normilize.scss";
 
 @import './logo.scss';
@@ -9,3 +11,5 @@
 @import './landscape.scss';
 @import './main.scss';
 @import './nav.scss';
+@import './team.scss';
+@import './card.scss';

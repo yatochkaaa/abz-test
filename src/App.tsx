@@ -1,7 +1,22 @@
 import React from 'react';
-import './styles/_.scss';
+
+import { User } from './types/types';
+import { getUsers } from './api/api';
+import './styles/styles.scss';
 
 const App: React.FC = () => {
+  const [users, setUsers] = React.useState<User[]>([]);
+
+  const getUsersFromServer = async () => {
+    const usersFromServer = await getUsers(7, 6);
+
+    setUsers(usersFromServer.users);
+  }
+
+  React.useEffect(() => {
+    getUsersFromServer();
+  }, []);
+
   return (
     <div className="App">
       <header className="header">
@@ -54,8 +69,28 @@ const App: React.FC = () => {
           </article>
         </section>
 
-        <section>
-          <h1>Working with GET request</h1>
+        <section className='team'>
+          <h1 className='team__title'>Working with GET request</h1>
+
+          <div className='team__list'>
+            {users.map(user => {
+              return (
+                <div className='team__card card' key={user.id}>
+                  <img
+                    className='card__photo'
+                    src={user.photo}
+                    alt="user"
+                  />
+                  <p className='card__name'>{user.name}</p>
+                  <p className='card__position'>{user.position}</p>
+                  <p className='card__email'>{user.email}</p>
+                  <p className='card__phone'>{user.phone}</p>
+                </div>
+              );
+            })}
+          </div>
+
+          <button className='team__button button'>Show more</button>
         </section>
       </main>
     </div>
