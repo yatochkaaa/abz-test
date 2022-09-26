@@ -8,11 +8,17 @@ import './styles/styles.scss';
 const App: React.FC = () => {
   const [users, setUsers] = React.useState<User[]>([]);
   const [positions, setPositions] = React.useState<Position[]>([]);
+
+  const [name, setName] = React.useState<string>('');
+  const [email, setEmail] = React.useState<string>('');
+  const [phone, setPhone] = React.useState<string>('');
+  const [position, setPosition] = React.useState<string>('');
   const [photoName, setPhotoName] = React.useState<string>('');
+
   const { register, handleSubmit } = useForm<RegisterField>();
 
   const onSubmit: SubmitHandler<RegisterField> = data => {
-    console.log(data);
+    console.log(data)
   }
 
   const updateData = async () => {
@@ -27,10 +33,35 @@ const App: React.FC = () => {
     updateData();
   }, []);
 
-  const handleUploadPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  }
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  }
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
+  }
+
+  const handlePositionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPosition(e.target.value);
+  }
+
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const correctPhotoName = e.target.value.split('\\')[2];
 
     setPhotoName(correctPhotoName);
+  }
+
+  const isFormFilled = () => {
+    if (name && email && phone && position && photoName) {
+      return true;
+    }
+
+    return false;
   }
 
   return (
@@ -129,6 +160,8 @@ const App: React.FC = () => {
             <input
               className='contact__nameInput input'
               {...register('name')}
+              value={name}
+              onChange={handleNameChange}
               type="text"
               placeholder='Your name'
             />
@@ -138,6 +171,8 @@ const App: React.FC = () => {
               {...register('email')}
               type="text"
               placeholder='Email'
+              value={email}
+              onChange={handleEmailChange}
             />
 
             <input
@@ -145,6 +180,8 @@ const App: React.FC = () => {
               {...register('phone')}
               type="text"
               placeholder='Phone'
+              value={phone}
+              onChange={handlePhoneChange}
             />
 
             <div className='contact__phoneTip'>
@@ -163,6 +200,7 @@ const App: React.FC = () => {
                       {...register('position')}
                       type='radio'
                       value={position.name}
+                      onChange={handlePositionChange}
                     />
                     {position.name}
                   </label>
@@ -194,11 +232,15 @@ const App: React.FC = () => {
                 id="upload"
                 type="file"
                 name="photo"
-                onChange={handleUploadPhotoChange}
+                accept='image/*'
+                onChange={handlePhotoChange}
               />
             </label>
 
-            <button className='button' disabled>
+            <button
+              className='button'
+              disabled={!isFormFilled()}
+            >
               Sing up
             </button>
           </form>
