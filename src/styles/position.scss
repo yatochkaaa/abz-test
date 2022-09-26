@@ -1,0 +1,40 @@
+.position {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__title {
+    margin-bottom: 14px;
+  }
+
+  &__select {
+    justify-self: center;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+
+    & input[type="radio"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    
+      float: left;
+      clear: none;
+      margin: 0 12px 0 0;
+      display: block;
+      width: 20px;
+      height: 20px;
+      padding: 5px;
+    
+      background-clip: content-box;
+      border: 1px solid $blue;
+      background-color: $white;
+      border-radius: 50%;
+    }
+
+    & input[type="radio"]:checked {
+      background-color: $blue;
+    }
+  }
+}

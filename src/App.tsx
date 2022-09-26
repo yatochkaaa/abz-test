@@ -1,21 +1,37 @@
 import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { User } from './types/types';
-import { getUsers } from './api/api';
+import { User, Position, RegisterField } from './types/types';
+import { getPositions, getUsers } from './api/api';
 import './styles/styles.scss';
 
 const App: React.FC = () => {
   const [users, setUsers] = React.useState<User[]>([]);
+  const [positions, setPositions] = React.useState<Position[]>([]);
+  const [photoName, setPhotoName] = React.useState<string>('');
+  const { register, handleSubmit } = useForm<RegisterField>();
 
-  const getUsersFromServer = async () => {
+  const onSubmit: SubmitHandler<RegisterField> = data => {
+    console.log(data);
+  }
+
+  const updateData = async () => {
     const usersFromServer = await getUsers(7, 6);
+    const positionsFromServer = await getPositions();
 
     setUsers(usersFromServer.users);
+    setPositions(positionsFromServer.positions);
   }
 
   React.useEffect(() => {
-    getUsersFromServer();
+    updateData();
   }, []);
+
+  const handleUploadPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const correctPhotoName = e.target.value.split('\\')[2];
+
+    setPhotoName(correctPhotoName);
+  }
 
   return (
     <div className="App">
@@ -61,8 +77,12 @@ const App: React.FC = () => {
       <main className='main'>
         <section className='main__landscape landscape'>
           <article className='landscape__content'>
-            <h1 className='landscape__header'>Test assignment for front-end developer</h1>
-            <p className='landscape__paragraph'>What defines a good front-end developer is one that has skilled knowledge of HTML, CSS, JS with a vast understanding of User design thinking as they'll be building web interfaces with accessibility in mind. They should also be excited to learn, as the world of Front-End Development keeps evolving.</p>
+            <h1 className='landscape__header'>
+              Test assignment for front-end developer
+            </h1>
+            <p className='landscape__paragraph'>
+              What defines a good front-end developer is one that has skilled knowledge of HTML, CSS, JS with a vast understanding of User design thinking as they'll be building web interfaces with accessibility in mind. They should also be excited to learn, as the world of Front-End Development keeps evolving.
+            </p>
             <button className='button'>
               Sign up
             </button>
@@ -70,7 +90,9 @@ const App: React.FC = () => {
         </section>
 
         <section className='team'>
-          <h1 className='team__title'>Working with GET request</h1>
+          <h1 className='team__title'>
+            Working with GET request
+          </h1>
 
           <div className='team__list'>
             {users.map(user => {
@@ -90,7 +112,96 @@ const App: React.FC = () => {
             })}
           </div>
 
-          <button className='team__button button'>Show more</button>
+          <button className='team__button button'>
+            Show more
+          </button>
+        </section>
+
+        <section className='contact'>
+          <h1 className='contact__title'>
+            Working with POST request
+          </h1>
+
+          <form
+            className='contact__form'
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <input
+              className='contact__nameInput input'
+              {...register('name')}
+              type="text"
+              placeholder='Your name'
+            />
+
+            <input
+              className='contact__emailInput input'
+              {...register('email')}
+              type="text"
+              placeholder='Email'
+            />
+
+            <input
+              className='contact__phoneInput input'
+              {...register('phone')}
+              type="text"
+              placeholder='Phone'
+            />
+
+            <div className='contact__phoneTip'>
+              +38 (xxx) xxx - xx - xx
+            </div>
+
+            <div className='contact__position position'>
+              <p className='position__title'>
+                Select your position
+              </p>
+
+              {positions.map(position => {
+                return (
+                  <label className='position__select' key={position.name}>
+                    <input
+                      {...register('position')}
+                      type='radio'
+                      value={position.name}
+                    />
+                    {position.name}
+                  </label>
+                );
+              })}
+            </div>
+            
+            <label
+              className='contact__photo'
+              htmlFor='upload'
+            >
+              <div
+                className='contact__uploadButton'
+              >
+                Upload
+              </div>
+
+              <input
+                className='contact__photoPath input'
+                type="text"
+                value={photoName}
+                placeholder="Upload your photo"
+                disabled
+              />
+
+              <input
+                className='contact__hiddenFileInput'
+                {...register("photo")}
+                id="upload"
+                type="file"
+                name="photo"
+                onChange={handleUploadPhotoChange}
+              />
+            </label>
+
+            <button className='button' disabled>
+              Sing up
+            </button>
+          </form>
         </section>
       </main>
     </div>

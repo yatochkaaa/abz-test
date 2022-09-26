@@ -10,6 +10,16 @@ export const getUsers = async (page: number, count: number) => {
   return response.json();
 };
 
+export const getPositions = async () => {
+  const response = await fetch(`${requestURL}/api/v1/positions`);
+
+  if (!response.ok) {
+    throw new Error(`${response.status} - ${response.statusText}`);
+  }
+
+  return response.json();
+};
+
 // export const createComment = async (
 //   postId: number,
 //   name: string,
